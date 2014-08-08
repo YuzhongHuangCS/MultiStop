@@ -40,6 +40,9 @@
       <property name="smallDecimalPoint">
        <bool>true</bool>
       </property>
+      <property name="digitCount">
+       <number>10</number>
+      </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Filled</enum>
       </property>
@@ -64,6 +67,9 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QListView" name="listView"/>
+    </item>
     <item row="1" column="1">
      <widget class="QPushButton" name="rightButton">
       <property name="sizePolicy">
@@ -76,9 +82,6 @@
        <string>Reset</string>
       </property>
      </widget>
-    </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QListView" name="listView"/>
     </item>
    </layout>
   </widget>
