@@ -36,10 +36,8 @@ void MultiStop::on_rightButton_clicked()
 
 void MultiStop::updateLCD()
 {
-    Clock now = QTime::currentTime();
-    qDebug() << startTime.msecsTo(now);
-    qDebug() << test.addMSecs(startTime.msecsTo(now)).toString("hh:mm:ss.zzz");
-    ui->lcdNumber->display(test.addMSecs(startTime.msecsTo(now)).toString("hh:mm:ss.zzz"));
+    QTime now = QTime::currentTime();
+    ui->lcdNumber->display(elapsed.addMSecs(startTime.msecsTo(now)).toString("hh:mm:ss.zzz"));
 }
 
 void MultiStop::start()
@@ -48,11 +46,13 @@ void MultiStop::start()
     connect(timer, SIGNAL(timeout()), this, SLOT(updateLCD()));
     if(pauseTime.isNull()) {
         startTime.start();
+        elapsed = QTime(0, 0, 0, 0);
     } else{
-        startTime.addMSecs(pauseTime.elapsed());
+        startTime = startTime.addMSecs(pauseTime.elapsed());
     }
     timer->start(10);
-    test = QTime(0, 0, 0, 0);
+
+    ui->leftButton->setText("Stop");
 }
 
 void MultiStop::stop()
@@ -61,4 +61,6 @@ void MultiStop::stop()
     timer->stop();
     disconnect(timer, SIGNAL(timeout()), this, SLOT(updateLCD()));
     pauseTime.start();
+
+    ui->leftButton->setText("Start");
 }

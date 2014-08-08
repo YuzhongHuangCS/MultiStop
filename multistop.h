@@ -1,8 +1,6 @@
 #ifndef MULTISTOP_H
 #define MULTISTOP_H
 
-#include "clock.h"
-
 #include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
@@ -35,9 +33,9 @@ private:
     QTimer* timer;
     bool isRunning;
 
-    Clock startTime;
+    QTime elapsed;
+    QTime startTime;
     QTime pauseTime;
-    QTime test;
 };
 
 #endif // MULTISTOP_H
