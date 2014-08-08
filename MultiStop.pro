@@ -14,10 +14,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         multistop.cpp \
-    timerlistmodel.cpp
+    timelistmodel.cpp
 
 HEADERS  += multistop.h \
-    timerlistmodel.h
+    timelistmodel.h
 
 FORMS    += multistop.ui
 

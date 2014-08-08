@@ -1,6 +1,7 @@
 #ifndef MULTISTOP_H
 #define MULTISTOP_H
 
+#include "timelistmodel.h"
 #include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
@@ -33,9 +34,10 @@ private:
     QTimer* timer;
     bool isRunning;
 
-    QTime elapsed;
     QTime startTime;
     QTime pauseTime;
+
+    TimeListModel* model;
 };
 
 #endif // MULTISTOP_H

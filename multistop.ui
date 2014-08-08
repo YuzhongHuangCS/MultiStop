@@ -10,6 +10,12 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Droid Sans Mono</family>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MultiStop</string>
   </property>
@@ -18,7 +24,7 @@
     <item row="0" column="0" colspan="2">
      <widget class="QLCDNumber" name="lcdNumber">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -57,7 +63,7 @@
     <item row="1" column="0">
      <widget class="QPushButton" name="leftButton">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -66,9 +72,6 @@
        <string>Start</string>
       </property>
      </widget>
-    </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QListView" name="listView"/>
     </item>
     <item row="1" column="1">
      <widget class="QPushButton" name="rightButton">
@@ -80,6 +83,16 @@
       </property>
       <property name="text">
        <string>Reset</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QTableView" name="tableView">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
      </widget>
     </item>

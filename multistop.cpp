@@ -9,6 +9,9 @@ MultiStop::MultiStop(QWidget *parent) :
 {
     ui->setupUi(this);
     timer = new QTimer(this);
+
+    model = new TimeListModel();
+    ui->tableView->setModel(model);
 }
 
 MultiStop::~MultiStop()
@@ -36,8 +39,7 @@ void MultiStop::on_rightButton_clicked()
 
 void MultiStop::updateLCD()
 {
-    QTime now = QTime::currentTime();
-    ui->lcdNumber->display(elapsed.addMSecs(startTime.msecsTo(now)).toString("hh:mm:ss.zzz"));
+    ui->lcdNumber->display(TimeListModel::compare(startTime, QTime::currentTime()));
 }
 
 void MultiStop::start()
@@ -46,7 +48,6 @@ void MultiStop::start()
     connect(timer, SIGNAL(timeout()), this, SLOT(updateLCD()));
     if(pauseTime.isNull()) {
         startTime.start();
-        elapsed = QTime(0, 0, 0, 0);
     } else{
         startTime = startTime.addMSecs(pauseTime.elapsed());
     }
