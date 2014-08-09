@@ -5,14 +5,21 @@
 
 class Clock : public QTime
 {
-    Q_OBJECT
+    // can't add Q_OBJECT marco here, because QTime is not in the QObject system
 public:
-    explicit Clock(QObject *parent = 0);
+    //didn't add explicit here, in order to use auto-type convert
+    Clock();
+    void run();
+    void pause();
+    void reset();
+    QString now();
+    QTime timePoint();
 
-signals:
+private:
+    QTime startTime;
+    QTime pauseTime;
 
-public slots:
-
+    bool initialized;
 };
 
 #endif // CLOCK_H

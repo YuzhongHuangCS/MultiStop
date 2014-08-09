@@ -1,6 +1,7 @@
 #ifndef TIMELISTMODEL_H
 #define TIMELISTMODEL_H
 
+#include "clock.h"
 #include <QAbstractTableModel>
 #include <QTime>
 
@@ -16,13 +17,11 @@ public:
                         int role = Qt::DisplayRole) const;
 
     virtual bool insertRow (int row, const QModelIndex & parent = QModelIndex());
-    void addRow(const QTime& now);
 
+    void addRow(const QTime& timePoint);
     static QString compare(const QTime& first, const QTime& second);
-
-    QTime* startTime;
-
     void clear();
+
 private:
     QList<QTime> clocks;
     QList<QStringList> content;

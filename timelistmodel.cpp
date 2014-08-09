@@ -24,7 +24,6 @@ QVariant TimeListModel::data(const QModelIndex &index, int role) const
     }
 
     if (role == Qt::DisplayRole) {
-        qDebug() << content.at(index.row()).at(index.column());
         return content.at(index.row()).at(index.column());
     } else {
         return QVariant();
@@ -53,26 +52,28 @@ QVariant TimeListModel::headerData(int section, Qt::Orientation orientation, int
     }
 }
 
-void TimeListModel::addRow(const QTime &now)
+void TimeListModel::addRow(const QTime &timePoint)
 {
     //QStringList = clocks.last().
     QStringList current;
     if(content.isEmpty()){
-        current.append(compare(*startTime, now));
+        current.append(timePoint.toString("hh:mm:ss.zzz"));
         current.append("-");
         current.append("-");
     } else{
-        current.append(compare(*startTime, now));
-        current.append(compare(clocks.first(), now));
-        current.append(compare(clocks.last(), now));
+        current.append(timePoint.toString("hh:mm:ss.zzz"));
+        current.append(compare(clocks.first(), timePoint));
+        current.append(compare(clocks.last(), timePoint));
     }
+
     content.append(current);
-    clocks.append(now);
+    clocks.append(timePoint);
     insertRow(content.length()-1);
 }
 
 bool TimeListModel::insertRow(int row, const QModelIndex &parent)
 {
+    // a bit change to the interface, which row means the inserted rowid
     beginInsertRows(parent, row, row);
     endInsertRows();
     return true;

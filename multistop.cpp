@@ -9,10 +9,8 @@ MultiStop::MultiStop(QWidget *parent) :
 {
     ui->setupUi(this);
     timer = new QTimer(this);
-    startTime.start();
 
     model = new TimeListModel();
-    model->startTime = &startTime;
     ui->tableView->setModel(model);
 }
 
@@ -41,18 +39,15 @@ void MultiStop::on_rightButton_clicked()
 
 void MultiStop::updateLCD()
 {
-    ui->lcdNumber->display(TimeListModel::compare(startTime, QTime::currentTime()));
+    ui->lcdNumber->display(clock.now());
 }
 
 void MultiStop::start()
 {
     isRunning = true;
+
+    clock.run();
     connect(timer, SIGNAL(timeout()), this, SLOT(updateLCD()));
-    if(pauseTime.isNull()) {
-        startTime.start();
-    } else{
-        startTime = startTime.addMSecs(pauseTime.elapsed());
-    }
     timer->start(10);
 
     ui->leftButton->setText("Stop");
@@ -62,9 +57,10 @@ void MultiStop::start()
 void MultiStop::stop()
 {
     isRunning = false;
+
+    clock.pause();
     timer->stop();
     disconnect(timer, SIGNAL(timeout()), this, SLOT(updateLCD()));
-    pauseTime.start();
 
     ui->leftButton->setText("Start");
     ui->rightButton->setText("Reset");
@@ -72,13 +68,12 @@ void MultiStop::stop()
 
 void MultiStop::count()
 {
-    model->addRow(QTime::currentTime());
+    model->addRow(clock.timePoint());
 }
 
 void MultiStop::reset()
 {
-    startTime.start();
-    pauseTime = QTime();
+    clock.reset();
     updateLCD();
     model->clear();
 }
