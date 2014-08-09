@@ -9,14 +9,15 @@ MultiStop::MultiStop(QWidget *parent) :
 {
     ui->setupUi(this);
     timer = new QTimer(this);
-
-    model = new TimeListModel();
+    model = new TimeListModel(this);
     ui->tableView->setModel(model);
 }
 
 MultiStop::~MultiStop()
 {
     delete ui;
+    delete timer;
+    delete model;
 }
 
 void MultiStop::on_leftButton_clicked()

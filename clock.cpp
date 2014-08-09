@@ -1,10 +1,5 @@
 #include "clock.h"
 
-Clock::Clock()
-    :QTime()
-{
-}
-
 void Clock::run()
 {
     if(pauseTime.isNull()){
@@ -32,6 +27,10 @@ void Clock::reset()
 
 QTime Clock::timePoint()
 {
-    QTime zero(0, 0, 0, 0);
-    return zero.addMSecs(startTime.elapsed());
+    /* if call this function in pause status
+     * you will get a wrong result
+     * but in this program this will never happen
+     */
+
+    return QTime(0, 0, 0, 0).addMSecs(startTime.elapsed());
 }

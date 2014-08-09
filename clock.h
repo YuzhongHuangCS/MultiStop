@@ -7,8 +7,10 @@ class Clock : public QTime
 {
     // can't add Q_OBJECT marco here, because QTime is not in the QObject system
 public:
-    //didn't add explicit here, in order to use auto-type convert
-    Clock();
+    /*use default constructor here, due to the same reason,
+     * it needn't add to the GObject tree
+     */
+
     void run();
     void pause();
     void reset();
@@ -18,8 +20,6 @@ public:
 private:
     QTime startTime;
     QTime pauseTime;
-
-    bool initialized;
 };
 
 #endif // CLOCK_H

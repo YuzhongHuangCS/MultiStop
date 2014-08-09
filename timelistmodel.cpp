@@ -19,15 +19,14 @@ int TimeListModel::columnCount(const QModelIndex &parent) const
 
 QVariant TimeListModel::data(const QModelIndex &index, int role) const
 {
+    if (role != Qt::DisplayRole) {
+        return QVariant();
+    }
     if (!index.isValid()){
         return QVariant();
     }
 
-    if (role == Qt::DisplayRole) {
-        return content.at(index.row()).at(index.column());
-    } else {
-        return QVariant();
-    }
+    return content.at(index.row()).at(index.column());
 }
 
 QVariant TimeListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -36,16 +35,10 @@ QVariant TimeListModel::headerData(int section, Qt::Orientation orientation, int
         return QVariant();
     }
     if (orientation == Qt::Horizontal) {
-        switch(section){
-            case 0:
-                return "总时间";
-                break;
-            case 1:
-                return "加时";
-                break;
-            case 2:
-                return "单圈时间";
-                break;
+        if((section >= 0) && (section <= 2)){
+            return headers[section];
+        } else{
+            return QVariant();
         }
     } else {
         return QString("No.%1").arg(section + 1);
@@ -66,23 +59,22 @@ void TimeListModel::addRow(const QTime &timePoint)
         current.append(compare(clocks.last(), timePoint));
     }
 
+    /* abort use of insertRows stuff
+     * since I can't pass the to-insert data into the function
+     * note that content.length() is exactly the new row-id
+     */
+    beginInsertRows(QModelIndex(), content.length(), content.length());
+
     content.append(current);
     clocks.append(timePoint);
-    insertRow(content.length()-1);
-}
 
-bool TimeListModel::insertRow(int row, const QModelIndex &parent)
-{
-    // a bit change to the interface, which row means the inserted rowid
-    beginInsertRows(parent, row, row);
     endInsertRows();
-    return true;
 }
 
 QString TimeListModel::compare(const QTime &first, const QTime &second)
 {
-    QTime zero(0, 0, 0, 0);
-    return zero.addMSecs(first.msecsTo(second)).toString("hh:mm:ss.zzz");
+
+    return QTime(0, 0, 0, 0).addMSecs(first.msecsTo(second)).toString("hh:mm:ss.zzz");
 }
 
 void TimeListModel::clear()

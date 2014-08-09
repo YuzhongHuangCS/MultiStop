@@ -1,14 +1,14 @@
 #ifndef MULTISTOP_H
 #define MULTISTOP_H
 
+#include "clock.h"
 #include "timelistmodel.h"
 #include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
-#include <QTime>
 
 namespace Ui {
-class MultiStop;
+    class MultiStop;
 }
 
 class MultiStop : public QMainWindow
@@ -34,10 +34,9 @@ private:
 
     Ui::MultiStop* ui;
 
-    QTimer* timer;
     bool isRunning;
-
     Clock clock;
+    QTimer* timer;
     TimeListModel* model;
 };
 
