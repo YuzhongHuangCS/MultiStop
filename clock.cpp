@@ -1,4 +1,5 @@
 #include "clock.h"
+#include <QDebug>
 
 void Clock::run()
 {
@@ -21,8 +22,7 @@ QString Clock::now()
 
 void Clock::reset()
 {
-    startTime = QTime();
-    pauseTime = QTime();
+    startTime = pauseTime = QTime();
 }
 
 QTime Clock::timePoint()

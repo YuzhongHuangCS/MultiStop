@@ -7,7 +7,7 @@ class Clock : public QTime
 {
     // can't add Q_OBJECT marco here, because QTime is not in the QObject system
 public:
-    /*use default constructor here, due to the same reason,
+    /* use default constructor here, due to the same reason,
      * it needn't add to the GObject tree
      */
 

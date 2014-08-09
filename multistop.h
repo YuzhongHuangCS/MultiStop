@@ -35,7 +35,7 @@ private:
     Ui::MultiStop* ui;
 
     bool isRunning;
-    Clock clock;
+    Clock* clock;
     QTimer* timer;
     TimeListModel* model;
 };

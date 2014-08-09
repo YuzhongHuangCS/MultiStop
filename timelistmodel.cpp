@@ -73,7 +73,6 @@ void TimeListModel::addRow(const QTime &timePoint)
 
 QString TimeListModel::compare(const QTime &first, const QTime &second)
 {
-
     return QTime(0, 0, 0, 0).addMSecs(first.msecsTo(second)).toString("hh:mm:ss.zzz");
 }
 

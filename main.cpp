@@ -2,9 +2,9 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MultiStop w;
+    QSharedPointer<QApplication> app = (QSharedPointer<QApplication>) new QApplication(argc, argv);
+    QSharedPointer<MultiStop> widget = (QSharedPointer<MultiStop>) new MultiStop();
 
-    w.show();
-    return a.exec();
+    widget->show();
+    return app->exec();
 }
