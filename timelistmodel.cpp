@@ -8,7 +8,7 @@ TimeListModel::TimeListModel(QObject *parent) :
 
 int TimeListModel::rowCount(const QModelIndex &parent) const
 {
-    return clocks.length();
+    return content.length();
 }
 
 int TimeListModel::columnCount(const QModelIndex &parent) const
@@ -19,20 +19,16 @@ int TimeListModel::columnCount(const QModelIndex &parent) const
 
 QVariant TimeListModel::data(const QModelIndex &index, int role) const
 {
-    qDebug() << index;
-    if (!index.isValid())
+    if (!index.isValid()){
         return QVariant();
+    }
 
-    if (index.row() >= 50)
+    if (role == Qt::DisplayRole) {
+        qDebug() << content.at(index.row()).at(index.column());
+        return content.at(index.row()).at(index.column());
+    } else {
         return QVariant();
-
-    if (index.column() >= 50)
-        return QVariant();
-
-    if (role == Qt::DisplayRole)
-        return "data";
-    else
-        return QVariant();
+    }
 }
 
 QVariant TimeListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -59,13 +55,39 @@ QVariant TimeListModel::headerData(int section, Qt::Orientation orientation, int
 
 void TimeListModel::addRow(const QTime &now)
 {
-    clocks.append(now);
     //QStringList = clocks.last().
-    qDebug() << clocks;
+    QStringList current;
+    if(content.isEmpty()){
+        current.append(compare(*startTime, now));
+        current.append("-");
+        current.append("-");
+    } else{
+        current.append(compare(*startTime, now));
+        current.append(compare(clocks.first(), now));
+        current.append(compare(clocks.last(), now));
+    }
+    content.append(current);
+    clocks.append(now);
+    insertRow(content.length()-1);
+}
+
+bool TimeListModel::insertRow(int row, const QModelIndex &parent)
+{
+    beginInsertRows(parent, row, row);
+    endInsertRows();
+    return true;
 }
 
 QString TimeListModel::compare(const QTime &first, const QTime &second)
 {
     QTime zero(0, 0, 0, 0);
     return zero.addMSecs(first.msecsTo(second)).toString("hh:mm:ss.zzz");
+}
+
+void TimeListModel::clear()
+{
+    beginResetModel();
+    clocks.clear();
+    content.clear();
+    endResetModel();
 }

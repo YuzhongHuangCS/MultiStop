@@ -17,6 +17,7 @@ class MultiStop : public QMainWindow
 
 public:
     explicit MultiStop(QWidget *parent = 0);
+    QTime startTime;
     ~MultiStop();
 
 private slots:
@@ -28,13 +29,14 @@ private slots:
 private:
     void start();
     void stop();
+    void count();
+    void reset();
 
     Ui::MultiStop* ui;
 
     QTimer* timer;
     bool isRunning;
 
-    QTime startTime;
     QTime pauseTime;
 
     TimeListModel* model;

@@ -15,9 +15,14 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const;
 
+    virtual bool insertRow (int row, const QModelIndex & parent = QModelIndex());
     void addRow(const QTime& now);
 
     static QString compare(const QTime& first, const QTime& second);
+
+    QTime* startTime;
+
+    void clear();
 private:
     QList<QTime> clocks;
     QList<QStringList> content;
