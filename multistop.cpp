@@ -72,6 +72,8 @@ void MultiStop::stop()
 void MultiStop::count()
 {
     model->addRow(clock->timePoint());
+    ui->tableView->resizeColumnsToContents();
+    ui->tableView->resizeRowsToContents();
 }
 
 void MultiStop::reset()

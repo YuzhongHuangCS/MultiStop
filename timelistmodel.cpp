@@ -47,12 +47,11 @@ QVariant TimeListModel::headerData(int section, Qt::Orientation orientation, int
 
 void TimeListModel::addRow(const QTime &timePoint)
 {
-    //QStringList = clocks.last().
     QStringList current;
     if(content.isEmpty()){
         current.append(timePoint.toString("hh:mm:ss.zzz"));
-        current.append("-");
-        current.append("-");
+        current.append(QTime(0, 0, 0, 0).toString("hh:mm:ss.zzz"));
+        current.append(timePoint.toString("hh:mm:ss.zzz"));
     } else{
         current.append(timePoint.toString("hh:mm:ss.zzz"));
         current.append(compare(clocks.first(), timePoint));
