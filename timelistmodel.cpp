@@ -49,13 +49,13 @@ void TimeListModel::addRow(const QTime &timePoint)
 {
     QStringList current;
     if(content.isEmpty()){
-        current.append(timePoint.toString("hh:mm:ss.zzz"));
-        current.append(QTime(0, 0, 0, 0).toString("hh:mm:ss.zzz"));
-        current.append(timePoint.toString("hh:mm:ss.zzz"));
+        current.append(QString("%1 ").arg(timePoint.toString("hh:mm:ss.zzz")));
+        current.append(QString(" %1 ").arg(QTime(0, 0, 0, 0).toString("hh:mm:ss.zzz")));
+        current.append(QString(" %1").arg(timePoint.toString("hh:mm:ss.zzz")));
     } else{
-        current.append(timePoint.toString("hh:mm:ss.zzz"));
-        current.append(compare(clocks.first(), timePoint));
-        current.append(compare(clocks.last(), timePoint));
+        current.append(QString("%1 ").arg(timePoint.toString("hh:mm:ss.zzz")));
+        current.append(QString(" %1 ").arg(compare(clocks.first(), timePoint)));
+        current.append(QString(" %1").arg(compare(clocks.last(), timePoint)));
     }
 
     /* abort use of insertRows stuff
