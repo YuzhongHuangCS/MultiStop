@@ -4,14 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
-import java.text.DecimalFormat;
 
 public class MilliChronometer extends TextView {
     private static final String TAG = "MilliChronometer";
 
-    public interface OnChronometerTickListener {
+    public interface OnMilliChronometerTickListener {
         void onChronometerTick(MilliChronometer milliChronometer);
     }
 
@@ -20,14 +20,14 @@ public class MilliChronometer extends TextView {
     private boolean mVisible;
     private boolean mStarted;
     private boolean mRunning;
-    private OnChronometerTickListener mOnChronometerTickListener;
+    private OnMilliChronometerTickListener mOnMilliChronometerTickListener;
+    private StringBuilder mRecycle = new StringBuilder(8);
 
     private static final int TICK_WHAT = 2;
-
-    private long timeElapsed;
+    private static final int UPDATE_INTERVAL = 40;
 
     public MilliChronometer(Context context) {
-        this (context, null, 0);
+        this(context, null, 0);
     }
 
     public MilliChronometer(Context context, AttributeSet attrs) {
@@ -35,8 +35,7 @@ public class MilliChronometer extends TextView {
     }
 
     public MilliChronometer(Context context, AttributeSet attrs, int defStyle) {
-        super (context, attrs, defStyle);
-
+        super(context, attrs, defStyle);
         init();
     }
 
@@ -46,7 +45,7 @@ public class MilliChronometer extends TextView {
     }
 
     public void setBase(long base) {
-        mBase = base;
+        mLast = mBase = base;
         dispatchChronometerTick();
         updateText(SystemClock.elapsedRealtime());
     }
@@ -55,16 +54,16 @@ public class MilliChronometer extends TextView {
         return mBase;
     }
 
-    public void setOnChronometerTickListener(OnChronometerTickListener listener) {
-        mOnChronometerTickListener = listener;
+    public void setOnChronometerTickListener(OnMilliChronometerTickListener listener) {
+        mOnMilliChronometerTickListener = listener;
     }
 
-    public OnChronometerTickListener getOnChronometerTickListener() {
-        return mOnChronometerTickListener;
+    public OnMilliChronometerTickListener getOnChronometerTickListener() {
+        return mOnMilliChronometerTickListener;
     }
 
     public void start() {
-        mBase = SystemClock.elapsedRealtime() - (mLast - mBase);
+        mBase += SystemClock.elapsedRealtime() - mLast;
         mStarted = true;
         updateRunning();
     }
@@ -75,51 +74,41 @@ public class MilliChronometer extends TextView {
         updateRunning();
     }
 
+    public void reset() {
+        init();
+    }
 
     public void setStarted(boolean started) {
         mStarted = started;
         updateRunning();
     }
 
+    public boolean isStarted() {
+        return mStarted;
+    }
+
+    public long getElapsed() {
+        return SystemClock.elapsedRealtime() - mBase;
+    }
+
     @Override
     protected void onDetachedFromWindow() {
-        super .onDetachedFromWindow();
+        super.onDetachedFromWindow();
         mVisible = false;
         updateRunning();
     }
 
     @Override
     protected void onWindowVisibilityChanged(int visibility) {
-        super .onWindowVisibilityChanged(visibility);
+        super.onWindowVisibilityChanged(visibility);
         mVisible = visibility == VISIBLE;
         updateRunning();
     }
 
     private synchronized void updateText(long now) {
-        timeElapsed = now - mBase;
-
-        DecimalFormat d2f = new DecimalFormat("00");
-        DecimalFormat d3f = new DecimalFormat("000");
-
-        int hours = (int)(timeElapsed / (3600 * 1000));
-        int remaining = (int)(timeElapsed % (3600 * 1000));
-
-        int minutes = remaining / (60 * 1000);
-        remaining = remaining % (60 * 1000);
-
-        int seconds = remaining / 1000;
-        remaining = remaining % 1000;
-
-        int milliseconds = remaining;
-
-        String text = "";
-
-        if (hours > 0) {
-            text += d2f.format(hours) + ":";
-        }
-
-        text += d2f.format(minutes) + ":" + d2f.format(seconds) + ":" + d3f.format(milliseconds);
-        setText(text);
+        long seconds = (now - mBase) / 1000;
+        long milli = (now - mBase) % 1000;
+        setText(String.format("%s.%03d", DateUtils.formatElapsedTime(mRecycle, seconds), milli));
     }
 
     private void updateRunning() {
@@ -128,7 +117,7 @@ public class MilliChronometer extends TextView {
             if (running) {
                 updateText(SystemClock.elapsedRealtime());
                 dispatchChronometerTick();
-                mHandler.sendMessageDelayed(Message.obtain(mHandler, TICK_WHAT), 40);
+                mHandler.sendMessageDelayed(Message.obtain(mHandler, TICK_WHAT), UPDATE_INTERVAL);
             } else {
                 mHandler.removeMessages(TICK_WHAT);
             }
@@ -141,26 +130,15 @@ public class MilliChronometer extends TextView {
             if (mRunning) {
                 updateText(SystemClock.elapsedRealtime());
                 dispatchChronometerTick();
-                sendMessageDelayed(Message.obtain(this , TICK_WHAT), 40);
+                sendMessageDelayed(Message.obtain(this , TICK_WHAT), UPDATE_INTERVAL);
             }
         }
     };
 
-    void dispatchChronometerTick() {
-        if (mOnChronometerTickListener != null) {
-            mOnChronometerTickListener.onChronometerTick(this);
+    private void dispatchChronometerTick() {
+        if (mOnMilliChronometerTickListener != null) {
+            mOnMilliChronometerTickListener.onChronometerTick(this);
         }
     }
 
-    public long getTimeElapsed() {
-        return timeElapsed;
-    }
-
-    public boolean isStarted() {
-        return mStarted;
-    }
-
-    public void reset() {
-        init();
-    }
 }

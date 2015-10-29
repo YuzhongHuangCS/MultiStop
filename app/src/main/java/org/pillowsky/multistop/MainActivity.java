@@ -1,21 +1,10 @@
 package org.pillowsky.multistop;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends Activity  {
     private MilliChronometer chronometer;
@@ -41,17 +30,19 @@ public class MainActivity extends Activity  {
         if (chronometer.isStarted()) {
             chronometer.stop();
             leftButton.setText("Start");
+            rightButton.setText("Reset");
         } else {
             chronometer.start();
             leftButton.setText("Stop");
+            rightButton.setText("Count");
         }
     }
 
     public void onRightButtonClick(View view) {
         if (chronometer.isStarted()) {
-            multiStopAdapter.addItem(chronometer.getTimeElapsed());
+            multiStopAdapter.addItem(chronometer.getElapsed());
         } else {
-            //reset()
+            multiStopAdapter.reset();
             chronometer.reset();
         }
     }

@@ -47,7 +47,7 @@ public class MultiStopAdapter extends BaseAdapter {
         }
 
         StopItem item = itemList.get(index);
-        ((TextView) view.findViewById(R.id.itemID)).setText(Integer.toString(index));
+        ((TextView) view.findViewById(R.id.itemID)).setText(Integer.toString(index + 1));
         ((TextView) view.findViewById(R.id.itemTotalTime)).setText(item.totalTime);
         ((TextView) view.findViewById(R.id.itemAddTime)).setText(item.addTime);
         ((TextView) view.findViewById(R.id.itemLapTime)).setText(item.lapTime);
@@ -69,6 +69,11 @@ public class MultiStopAdapter extends BaseAdapter {
         }
 
         itemList.add(item);
+        notifyDataSetChanged();
+    }
+
+    public void reset() {
+        itemList.clear();
         notifyDataSetChanged();
     }
 }
