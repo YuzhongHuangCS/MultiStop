@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MultiStop</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="count">Count</string>
+    <string name="reset">Reset</string>
+    <string name="item_id">ID</string>
+    <string name="item_total_time">TotalTime</string>
+    <string name="item_add_time">AddTime</string>
+    <string name="item_lap_time">LapTime</string>
 </resources>

@@ -22,8 +22,8 @@ public class MultiStopAdapter extends BaseAdapter {
     private ArrayList<StopItem> itemList = new ArrayList<StopItem>();
     private StringBuilder mRecycle = new StringBuilder(8);
 
-    public MultiStopAdapter(Context context) {
-        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public MultiStopAdapter(LayoutInflater inflater) {
+        this.inflater = inflater;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MultiStopAdapter extends BaseAdapter {
         }
 
         StopItem item = itemList.get(index);
-        ((TextView)view.findViewById(R.id.itemID)).setText(String.format("%d:", index + 1));
+        ((TextView)view.findViewById(R.id.itemID)).setText(String.format("%d", index + 1));
         ((TextView)view.findViewById(R.id.itemTotalTime)).setText(item.totalTime);
         ((TextView)view.findViewById(R.id.itemAddTime)).setText(item.addTime);
         ((TextView)view.findViewById(R.id.itemLapTime)).setText(item.lapTime);
@@ -62,7 +62,7 @@ public class MultiStopAdapter extends BaseAdapter {
         item.totalTime = formatTime(elapsed);
 
         if (itemList.isEmpty()) {
-            item.addTime = Long.toString(0);
+            item.addTime = formatTime(0);
             item.lapTime = formatTime(elapsed);
         } else {
             item.addTime = formatTime(elapsed - itemList.get(0).elapsed);
