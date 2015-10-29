@@ -1,6 +1,7 @@
 package org.pillowsky.multistop;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,11 @@ public class MultiStopAdapter extends BaseAdapter {
         String lapTime;
     }
 
-    ArrayList<StopItem> itemList;
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
+    private ArrayList<StopItem> itemList = new ArrayList<StopItem>();
+    private StringBuilder mRecycle = new StringBuilder(8);
 
     public MultiStopAdapter(Context context) {
-        itemList = new ArrayList<StopItem>();
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -47,25 +48,25 @@ public class MultiStopAdapter extends BaseAdapter {
         }
 
         StopItem item = itemList.get(index);
-        ((TextView) view.findViewById(R.id.itemID)).setText(Integer.toString(index + 1));
-        ((TextView) view.findViewById(R.id.itemTotalTime)).setText(item.totalTime);
-        ((TextView) view.findViewById(R.id.itemAddTime)).setText(item.addTime);
-        ((TextView) view.findViewById(R.id.itemLapTime)).setText(item.lapTime);
+        ((TextView)view.findViewById(R.id.itemID)).setText(String.format("%d:", index + 1));
+        ((TextView)view.findViewById(R.id.itemTotalTime)).setText(item.totalTime);
+        ((TextView)view.findViewById(R.id.itemAddTime)).setText(item.addTime);
+        ((TextView)view.findViewById(R.id.itemLapTime)).setText(item.lapTime);
 
         return view;
     }
 
-    public void addItem(long elapsed) {
+    public void addStop(long elapsed) {
         StopItem item = new StopItem();
         item.elapsed = elapsed;
-        item.totalTime = Long.toString(elapsed);
+        item.totalTime = formatTime(elapsed);
 
         if (itemList.isEmpty()) {
             item.addTime = Long.toString(0);
-            item.lapTime = Long.toString(elapsed);
+            item.lapTime = formatTime(elapsed);
         } else {
-            item.addTime = Long.toString(itemList.get(0).elapsed - elapsed);
-            item.lapTime = Long.toString(itemList.get(itemList.size() - 1).elapsed - elapsed);
+            item.addTime = formatTime(elapsed - itemList.get(0).elapsed);
+            item.lapTime = formatTime(elapsed - itemList.get(itemList.size() - 1).elapsed);
         }
 
         itemList.add(item);
@@ -75,5 +76,9 @@ public class MultiStopAdapter extends BaseAdapter {
     public void reset() {
         itemList.clear();
         notifyDataSetChanged();
+    }
+
+    private String formatTime(long time) {
+        return String.format("%s.%03d", DateUtils.formatElapsedTime(mRecycle, time / 1000), time % 1000);
     }
 }

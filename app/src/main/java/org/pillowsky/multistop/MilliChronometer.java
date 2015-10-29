@@ -106,9 +106,7 @@ public class MilliChronometer extends TextView {
     }
 
     private synchronized void updateText(long now) {
-        long seconds = (now - mBase) / 1000;
-        long milli = (now - mBase) % 1000;
-        setText(String.format("%s.%03d", DateUtils.formatElapsedTime(mRecycle, seconds), milli));
+        setText(formatTime(now - mBase));
     }
 
     private void updateRunning() {
@@ -141,4 +139,7 @@ public class MilliChronometer extends TextView {
         }
     }
 
+    private String formatTime(long time) {
+        return String.format("%s.%03d", DateUtils.formatElapsedTime(mRecycle, time / 1000), time % 1000);
+    }
 }

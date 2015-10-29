@@ -21,8 +21,8 @@ public class MainActivity extends Activity  {
         chronometer = (MilliChronometer)findViewById(R.id.chronometer);
         leftButton = (Button)findViewById(R.id.leftButton);
         rightButton = (Button)findViewById(R.id.rightButton);
-        multiStopAdapter = new MultiStopAdapter(this);
         multiStopView = (ListView)findViewById(R.id.multiStopView);
+        multiStopAdapter = new MultiStopAdapter(this);
         multiStopView.setAdapter(multiStopAdapter);
     }
 
@@ -40,7 +40,7 @@ public class MainActivity extends Activity  {
 
     public void onRightButtonClick(View view) {
         if (chronometer.isStarted()) {
-            multiStopAdapter.addItem(chronometer.getElapsed());
+            multiStopAdapter.addStop(chronometer.getElapsed());
         } else {
             multiStopAdapter.reset();
             chronometer.reset();
