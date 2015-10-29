@@ -1,6 +1,5 @@
 package org.pillowsky.multistop;
 
-import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,7 @@ public class MultiStopAdapter extends BaseAdapter {
         }
 
         StopItem item = itemList.get(index);
-        ((TextView)view.findViewById(R.id.itemID)).setText(String.format("%d", index + 1));
+        ((TextView)view.findViewById(R.id.itemID)).setText(String.format("%d.", index + 1));
         ((TextView)view.findViewById(R.id.itemTotalTime)).setText(item.totalTime);
         ((TextView)view.findViewById(R.id.itemAddTime)).setText(item.addTime);
         ((TextView)view.findViewById(R.id.itemLapTime)).setText(item.lapTime);

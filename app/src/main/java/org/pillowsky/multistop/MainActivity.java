@@ -64,7 +64,7 @@ public class MainActivity extends Activity  {
     }
 
     private void onResetClick() {
-        multiStopAdapter.reset();
         chronometer.reset();
+        multiStopAdapter.reset();
     }
 }
