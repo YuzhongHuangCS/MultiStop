@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/itemID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/itemTotalTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TotalTime"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/itemID"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/itemAddTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AddTime"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/itemTotalTime"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/itemLapTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LapTime"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/itemAddTime"
+        android:layout_marginLeft="8dp" />
+</RelativeLayout>
